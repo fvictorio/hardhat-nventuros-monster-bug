@@ -7,19 +7,7 @@ async function main() {
 
   const stateManager = network.provider._wrapped._wrapped._wrapped._wrappedProvider._node._stateManager;
 
-  // send 13 txs
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
-  await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
+  // send 1 unrelated tx
   await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
 
   const stateRootAfterTxs = await stateManager.getStateRoot();
