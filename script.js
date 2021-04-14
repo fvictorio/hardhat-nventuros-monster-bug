@@ -24,7 +24,7 @@ async function main() {
 
   const stateRootAfterTxs = await stateManager.getStateRoot();
 
-  // deploy, get code length, change the set the state root to itself, get code length
+  // send 1wei to receiver, change the state root to itself, get receivers balance
   await network.provider.send("eth_sendTransaction", [{
     from: a,
     to: RECEIVER.toString(),
@@ -38,7 +38,7 @@ async function main() {
 
   await stateManager.setStateRoot(stateRootAfterTxs)
 
-  // deploy, get code length, change the set the state root to itself, get code length
+  // send 1wei to receiver, change the state root to itself, get receivers balance
   await network.provider.send("eth_sendTransaction", [{
     from: a,
     to: RECEIVER.toString(),
