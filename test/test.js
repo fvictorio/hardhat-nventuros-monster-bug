@@ -1,8 +1,8 @@
-const { expect } = require( 'chai');
+const { expect } = require("chai");
 
-describe('describe', () => {
-  let pool;
-  sharedBeforeEach('run 13 txs', async () => {
+describe("describe", () => {
+  let test;
+  sharedBeforeEach("run 13 txs", async () => {
     const [s] = await ethers.getSigners();
 
     await s.sendTransaction({ to: s.address });
@@ -20,24 +20,22 @@ describe('describe', () => {
     await s.sendTransaction({ to: s.address });
   });
 
-  describe('register', () => {
-    context('for a minimal swap info pool', () => {
-      sharedBeforeEach('create pool', async () => {
-        pool = await deploy('Test');
-      });
-      it('reverts', async () => {
-        await expect(pool.fail()).to.be.revertedWith('');
-      });
+  describe("inner describe 1", () => {
+    sharedBeforeEach("create test", async () => {
+      test = await deploy("Test");
     });
+    it("reverts", async () => {
+      await expect(test.fail()).to.be.revertedWith("");
+    });
+  });
 
-    context('for a general pool', () => {
-      sharedBeforeEach('create pool', async () => {
-        pool = await deploy('Test');
-        await pool.get();
-      });
-      it('reverts', async () => {
-        await expect(pool.fail()).to.be.revertedWith('');
-      });
+  describe("inner describe 2", () => {
+    sharedBeforeEach("create test", async () => {
+      test = await deploy("Test");
+      await test.get();
+    });
+    it("reverts", async () => {
+      await expect(test.fail()).to.be.revertedWith("");
     });
   });
 });
@@ -45,12 +43,12 @@ describe('describe', () => {
 const SNAPSHOTS = [];
 
 function sharedBeforeEach(nameOrFn, maybeFn) {
-  const name = typeof nameOrFn === 'string' ? nameOrFn : undefined;
-  const fn = typeof nameOrFn === 'function' ? nameOrFn : (maybeFn);
+  const name = typeof nameOrFn === "string" ? nameOrFn : undefined;
+  const fn = typeof nameOrFn === "function" ? nameOrFn : maybeFn;
 
   let initialized = false;
 
-  beforeEach(wrapWithTitle(name, 'Running shared before each or reverting'), async function () {
+  beforeEach(wrapWithTitle(name, "Running shared before each or reverting"), async function () {
     const provider = await getProvider();
     if (!initialized) {
       const prevSnapshot = SNAPSHOTS.pop();
@@ -65,7 +63,7 @@ function sharedBeforeEach(nameOrFn, maybeFn) {
       initialized = true;
     } else {
       const snapshotId = SNAPSHOTS.pop();
-      if (snapshotId === undefined) throw Error('Missing snapshot ID');
+      if (snapshotId === undefined) throw Error("Missing snapshot ID");
       await revert(provider, snapshotId);
       SNAPSHOTS.push(await takeSnapshot(provider));
     }
@@ -91,17 +89,17 @@ async function deploy(contract, { from, args } = {}) {
 }
 
 async function takeSnapshot(provider) {
-  const result = (await provider.request({
-    method: 'evm_snapshot',
-  }));
+  const result = await provider.request({
+    method: "evm_snapshot"
+  });
 
   return result;
 }
 
 async function revert(provider, snapshotId) {
   const result = await provider.request({
-    method: 'evm_revert',
-    params: [snapshotId],
+    method: "evm_revert",
+    params: [snapshotId]
   });
 
   if (!result) {
@@ -111,14 +109,13 @@ async function revert(provider, snapshotId) {
 }
 
 async function getProvider() {
-  const hre = require('hardhat');
+  const hre = require("hardhat");
   return hre.network.provider;
 }
 
 const factories = {};
 
 async function getFactory(contractName) {
-  // Cache factory creation to avoid processing the compiled artifacts multiple times
   let factory = factories[contractName];
 
   if (factory == undefined) {
