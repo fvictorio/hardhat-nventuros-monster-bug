@@ -4,35 +4,33 @@ describe("describe", function () {
   this.timeout(0);
   let test;
 
-  {
-    let initialized = false;
-    let snapshot;
+  let initialized = false;
+  let snapshot;
 
-    beforeEach("run 13 txs", async () => {
-      if (!initialized) {
-        const [s] = await ethers.getSigners();
+  beforeEach("run 13 txs", async () => {
+    if (!initialized) {
+      const [s] = await ethers.getSigners();
 
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
-        await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
+      await s.sendTransaction({ to: s.address });
 
-        initialized = true;
-        snapshot = await takeSnapshot();
-      } else {
-        await revert(snapshot);
-      }
-    });
-  }
+      initialized = true;
+      snapshot = await takeSnapshot();
+    } else {
+      await revert(snapshot);
+    }
+  });
 
   describe("inner describe 1", () => {
     it("reverts", async () => {
@@ -42,22 +40,9 @@ describe("describe", function () {
   });
 
   describe("inner describe 2", () => {
-    {
-      let initialized = false;
-      let snapshot;
-      beforeEach("create test", async () => {
-        if (!initialized) {
-          test = await deploy("Test");
-          await test.get();
-
-          initialized = true;
-          snapshot = await takeSnapshot();
-        } else {
-          await revertSnapshot(snapshot);
-        }
-      });
-    }
     it("reverts", async () => {
+      const test = await deploy("Test");
+      await test.get();
       await expect(test.fail()).to.be.revertedWith("");
     });
   });
