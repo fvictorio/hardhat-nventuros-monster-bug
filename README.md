@@ -7,4 +7,4 @@ yarn
 node --require hardhat/register script.js
 ```
 
-When the bug is present, the last `console.log` prints 2, because the contract code isn't found.
+When the bug is present, the last `console.log` prints 0, but the balance should still be 1.
