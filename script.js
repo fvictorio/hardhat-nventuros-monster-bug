@@ -1,6 +1,8 @@
 async function main() {
   const [a] = await network.provider.send("eth_accounts");
 
+  const stateManager = network.provider._wrapped._wrapped._wrapped._wrappedProvider._node._stateManager;
+
   // send 13 txs
   await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
   await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
@@ -16,7 +18,7 @@ async function main() {
   await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
   await network.provider.send("eth_sendTransaction", [{ from: a, to: a }]);
 
-  const snapshot = await takeSnapshot();
+  const stateRootAfterTxs = await stateManager.getStateRoot();
 
   // deploy, get code length, call view function, get code length
   let tx = await network.provider.send("eth_sendTransaction", [{
@@ -33,8 +35,7 @@ async function main() {
   }])
   console.log(await codeLength(receipt.contractAddress));
 
-  // revert snapshot
-  await revert(snapshot);
+  await stateManager.setStateRoot(stateRootAfterTxs)
 
   // deploy, get code length, call view function, get code length
   tx = await network.provider.send("eth_sendTransaction", [{
@@ -44,6 +45,7 @@ async function main() {
   receipt = await network.provider.send("eth_getTransactionReceipt", [tx])
 
   console.log(await codeLength(receipt.contractAddress));
+  global.__trace = true;
   await network.provider.send("eth_call", [{
     from: a,
     to: receipt.contractAddress,
@@ -62,24 +64,4 @@ main()
 async function codeLength(address) {
   const code = await network.provider.send("eth_getCode", [address]);
   return code.length
-}
-
-async function takeSnapshot() {
-  const result = await network.provider.request({
-    method: "evm_snapshot"
-  });
-
-  return result;
-}
-
-async function revert(snapshotId) {
-  const result = await network.provider.request({
-    method: "evm_revert",
-    params: [snapshotId]
-  });
-
-  if (!result) {
-    console.trace();
-    process.exit(1);
-  }
 }
