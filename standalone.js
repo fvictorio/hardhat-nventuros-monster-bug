@@ -133,9 +133,6 @@ async function main() {
 
   // Sending transaction from A to A
   await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
   await stateManager.checkpoint()
   
   await stateManager.checkpoint()
@@ -164,7 +161,6 @@ async function main() {
   await stateManager.getStateRoot(true)
   await stateManager.commit()
   await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
   await stateManager.getContractCode(addressA)
   await stateManager.getAccount(addressA)
 
@@ -173,9 +169,6 @@ async function main() {
   const stateRootAfterTx = await stateManager.getStateRoot(false);
 
   // Sending transaction from A to RECEIVER
-  await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
   await stateManager.getAccount(addressA)
   await stateManager.checkpoint()
   await stateManager.checkpoint()
@@ -204,7 +197,6 @@ async function main() {
   await stateManager.getStateRoot(true)
   await stateManager.commit()
   await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
   await stateManager.getContractCode(RECEIVER)
   await stateManager.getAccount(RECEIVER)
 
@@ -212,9 +204,6 @@ async function main() {
   await stateManager.setStateRoot(stateRootAfterTx)
 
   // Resending the latest tx
-  await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
-  await stateManager.getAccount(addressA)
   await stateManager.getAccount(addressA)
   await stateManager.checkpoint()
   await stateManager.checkpoint()
@@ -242,7 +231,6 @@ async function main() {
   await stateManager.putAccount(COINBASE, Account.fromRlpSerializedAccount(toBuffer("0xf84c80881bc20632db1a8000a056e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421a0c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470")))
   await stateManager.getStateRoot(true)
   await stateManager.commit()
-  await stateManager.getAccount(addressA)
   await stateManager.getAccount(addressA)
   await stateManager.getContractCode(RECEIVER)
   await stateManager.getAccount(RECEIVER)
